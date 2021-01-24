@@ -10,9 +10,10 @@ Commands:
 - `!count` - counts the number of submissions currently in the queue
 - `!check` - lists all of your submissions and all feedback recieved
 - `!crit random` - sends you a random submission from the queue to critique
-- `!crit next` - sends you the next submission from the the queue to critique (does not shift queue position)
+  - always returns a submission you haven't reviewed
+- `!crit next` - sends you the next submission from the the queue to critique
+  - doesn't shift the queue position, useful if you want to do them in order
 - `!level` - checks your crit level (how much feedback you have given)
-- Note on the `!crit` commands: they will always send you submissions you haven't already given feedback to
 
 Admin Commands:
 
