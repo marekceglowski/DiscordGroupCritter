@@ -1,12 +1,19 @@
 import discord
+import random
+from tinydb import TinyDB, Query
 from datetime import datetime
 import os
 import requests
 import json
-import random
 
 client = discord.Client()
 token = open("token.txt", "r").read().strip()
+
+db = TinyDB('db.json')
+submission_tbl = db.table('submissions')
+feedback_tbl = db.table('feedback')
+crit_stats = db.table('crit_stats')
+completed_crits = db.table('completed_crits')
 
 submission_list = []
 
@@ -70,7 +77,7 @@ async def on_message(message):
     if message.content.startswith('!add '):
         pos = add_to_queue(message)
         await dm(message.author, 'Submission added! Current position in queue: '
-                 + str(pos) + "\n" + 'Link: ||<' + message.jump_url + '>||\n.')
+                 + str(pos) + "\n" + 'Link: ||<' + message.jump_url + '>||\n')
 
     # Count Submissions
     if message.content.startswith('!count'):

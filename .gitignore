@@ -2,4 +2,4 @@
 venv/
 .idea/
 token.txt
-
+db.json
