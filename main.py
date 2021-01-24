@@ -6,7 +6,7 @@ import json
 import random
 
 client = discord.Client()
-token = 'ODAyNjE4NzcyNzY2NDU3ODg3.YAx2-w.1REzNY5cFmhoAb9Tw7PqBBxmCwg'
+token = open("token.txt", "r").read().strip()
 
 submission_list = []
 
