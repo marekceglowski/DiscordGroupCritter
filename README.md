@@ -9,10 +9,8 @@ Commands:
 - `!add <text>` - adds a new submission to the group crit queue
 - `!count` - counts the number of submissions currently in the queue
 - `!check` - lists all of your submissions and all feedback recieved
-- `!crit random` - sends you a random submission from the queue to critique
-  - always returns a submission you haven't reviewed
-- `!crit next` - sends you the next submission from the the queue to critique
-  - doesn't shift the queue position, useful if you want to do them in order
+- `!crit random` - sends you a random submission from the queue to critique (always returns a submission you haven't reviewed)
+- `!crit next` - sends you the next submission from the the queue to critique (doesn't shift the queue position, useful if you want to do them in order)
 - `!level` - checks your crit level (how much feedback you have given)
 
 Admin Commands:
