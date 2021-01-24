@@ -17,6 +17,7 @@ Admin Commands:
 - These commands will help Max with doing the livestream group crits.
 
 TinyDB Database Structure:
+(under development)
 
 ```
 submissions
