@@ -2,6 +2,8 @@
 
 This is a discord bot that will assist with doing group crits as well as tracking feedback in the LMY Patreon channel `#group-crit-submissions`.
 
+GroupCritter lets users keep track of their own submissions and feedback they have recieved and given. Anytime a submission is replied to using Discord's "reply" option, that will count as feedback.
+
 Commands:
 
 - `!add <text>` - adds a new submission to the queue
@@ -12,7 +14,29 @@ Commands:
 Admin Commands:
 
 - TBD
+- These commands will help Max with doing the livestream group crits.
 
-Notes:
+TinyDB Database Structure:
 
-- To give feedback in a traceable way, a user must 'reply' to the message that they want to critique.
+```
+submissions
+- id
+- user_id
+- jump_url
+- created_at
+
+feedback
+- id
+- submission_id
+- user_id
+- jump_url
+
+crit_stats
+- user_id
+- completed_crits
+- queue_pos
+
+completed_crits
+- user_id
+- submission_id
+```
