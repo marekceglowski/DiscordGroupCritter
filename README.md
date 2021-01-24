@@ -1,4 +1,4 @@
-# DiscordGroupCritter
+# GroupCritter (for LMY Patreon)
 
 This is a discord bot that will assist with doing group crits as well as tracking feedback in the LMY Patreon channel `#group-crit-submissions`.
 
