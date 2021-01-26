@@ -17,3 +17,8 @@ Admin Commands:
 
 - `!next` - moves the queue up one spot and displays a link to the submission
 - `!feedback` - shows a list of all feedback given to the current submission
+
+Database Structure can be found here:
+https://github.com/marekceglowski/DiscordGroupCritter/blob/master/DB_INFO.md
+
+Medal Ranking list can be found here:
