@@ -16,18 +16,6 @@ submission_list = []
 intents = discord.Intents(messages=True, guilds=False, members=False)
 lmy_bot = commands.Bot(command_prefix="!", intents=intents)
 
-##### Models ######
-
-
-class Submission:
-    def __init__(self, id, user, content, jump_url, time, feedback):
-        self.id = id
-        self.user = user
-        self.content = content
-        self.jump_url = jump_url
-        self.time = time
-        self.feedback = feedback
-
 
 ##### Functions #####
 
