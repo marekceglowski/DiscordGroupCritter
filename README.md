@@ -11,10 +11,12 @@ Commands:
 
 - `!add <text>` - adds a new submission to the group crit queue
 - `!count` - counts the number of submissions currently in the queue
-- `!check` - lists all of your submissions and all feedback recieved
+- `!check` - lists your rank, submissions and all feedback recieved
 - `!crit random` - sends you a random submission from the queue to critique (always returns a submission you haven't reviewed)
 - `!crit next` - sends you the next submission from the the queue to critique (doesn't shift the queue position, useful if you want to do them in order)
-- `!level` - checks your crit level (how much feedback you have given)
+- `!medals` - lists all medal rank requirements
+- `!rank` - displays your rank and how much much feedback you have given
+- `!submissions` - displays your crit submissions and feedback recieved
 
 Admin Commands:
 
@@ -25,3 +27,4 @@ Database Structure can be found here:
 https://github.com/marekceglowski/DiscordGroupCritter/blob/master/DB_INFO.md
 
 Medal Ranking list can be found here:
+(TBD)
