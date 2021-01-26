@@ -33,4 +33,6 @@ Medal Ranking rules and commands can be found here:
 https://github.com/marekceglowski/DiscordGroupCritter/blob/master/medals/MEDALS.md
 
 Proposed Bot Permissions:
+
 https://images2.imgbox.com/81/fe/mXucvb4t_o.png
+
