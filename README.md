@@ -6,6 +6,7 @@ GroupCritter does the following:
 - lets user keep track of submissions and feedback given
 - post milestone announcements in the `#general` chat (eg. User1 has given feedback for 20 group crit submissions! 🎉)
 - award ranks and medals for reaching milestones
+- lets the admin (@la_meme_young) manage a livestream crit queue
 
 Commands:
 
