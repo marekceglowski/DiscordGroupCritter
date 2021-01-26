@@ -6,6 +6,7 @@
 - user_id [FK]
 - jump_url
 - created_at
+- livestream_completed -- boolean
 
 ## users
 - id [PK]
