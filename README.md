@@ -2,7 +2,10 @@
 
 This is a discord bot that will assist with doing group crits as well as tracking feedback in the LMY Patreon channel `#group-crit-submissions`.
 
-GroupCritter lets users keep track of their own submissions and feedback they have recieved and given. Anytime a submission is replied to using Discord's "reply" option, GroupCritter will count that as feedback. GroupCritter will also post milestone announcements in the `#general` chat (eg. User1 has given feedback for 20 group crit submissions! 🎉)
+GroupCritter does the following:
+- lets user keep track of submissions and feedback given
+- post milestone announcements in the `#general` chat (eg. User1 has given feedback for 20 group crit submissions! 🎉)
+- award ranks and medals for reaching milestones
 
 Commands:
 
