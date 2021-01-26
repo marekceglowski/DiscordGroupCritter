@@ -10,11 +10,6 @@ from discord.ext import commands, tasks
 
 token = open("token.txt", "r").read().strip()
 crit_channel_id = 802620586513530895
-db = TinyDB("db.json")
-submission_tbl = db.table("submissions")
-feedback_tbl = db.table("feedback")
-crit_stats = db.table("crit_stats")
-completed_crits = db.table("completed_crits")
 
 submission_list = []
 
