@@ -26,5 +26,5 @@ Admin Commands:
 Database Structure can be found here:
 https://github.com/marekceglowski/DiscordGroupCritter/blob/master/DB_INFO.md
 
-Medal Ranking list can be found here:
-(TBD)
+Medal Ranking rules and commands can be found here:
+https://github.com/marekceglowski/DiscordGroupCritter/blob/master/medals/MEDALS.md
