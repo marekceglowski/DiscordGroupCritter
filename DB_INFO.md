@@ -24,5 +24,5 @@
 - id [PK]
 - message_id
 - submission_id [FK]
-- user_id [FK]
+- user_id [FK] -- user id of the person that gave the feedback
 - jump_url
