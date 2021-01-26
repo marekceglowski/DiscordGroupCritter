@@ -2,7 +2,8 @@
 
 ## Medal Level -- Number of Feedbacks
 
-- Rank 01 -- Default
+- (no medal) -- Default
+- Rank 01 -- 1 Feedback
 - Rank 02 -- 5 Feedbacks
 - Rank 03 -- 10 Feedbacks
 - Rank 04 -- 20 Feedbacks
