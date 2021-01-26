@@ -6,6 +6,7 @@ GroupCritter does the following:
 - lets user keep track of submissions and feedback given
 - post milestone announcements in the `#general` chat (eg. User1 has given feedback for 20 group crit submissions! 🎉)
 - award ranks and medals for reaching milestones
+- lets the admin (@la_meme_young) manage a livestream crit queue
 
 Commands:
 
@@ -24,7 +25,9 @@ Admin Commands:
 - `!feedback` - shows a list of all feedback given to the current submission
 
 Database Structure can be found here:
+
 https://github.com/marekceglowski/DiscordGroupCritter/blob/master/DB_INFO.md
 
-Medal Ranking list can be found here:
-(TBD)
+Medal Ranking rules and commands can be found here:
+
+https://github.com/marekceglowski/DiscordGroupCritter/blob/master/medals/MEDALS.md
