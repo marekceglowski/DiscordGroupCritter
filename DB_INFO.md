@@ -11,8 +11,8 @@
 - id [PK]
 - discord_user_id -- (the id from discord)
 - completed_crits
-- queue_pos -- default: 0, crit next command will bump, admin next command may de-bump
-- rank_id [FK]
+- queue_pos -- default: 1, crit next command will bump, admin next command may de-bump
+- rank_id [FK] -- default: 1, this will be the lowest possible rank
 
 ## ranks
 - id [PK]
