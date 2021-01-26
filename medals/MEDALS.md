@@ -1,3 +1,5 @@
+![medal_list](https://github.com/marekceglowski/DiscordGroupCritter/raw/master/medals/full_list.PNG)
+
 ## Medal Level -- Number of Feedbacks
 
 - Rank 01 -- Default
