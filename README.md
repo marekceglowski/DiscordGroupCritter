@@ -24,7 +24,9 @@ Admin Commands:
 - `!feedback` - shows a list of all feedback given to the current submission
 
 Database Structure can be found here:
+
 https://github.com/marekceglowski/DiscordGroupCritter/blob/master/DB_INFO.md
 
 Medal Ranking rules and commands can be found here:
+
 https://github.com/marekceglowski/DiscordGroupCritter/blob/master/medals/MEDALS.md
