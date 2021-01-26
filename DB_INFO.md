@@ -19,6 +19,7 @@
 - rank_name
 - feedback_count -- number of feedbacks to reach rank
 - medal_code -- the medal emoji code (eg. :23:)
+- color -- will contain color (not sure how to format yet)
 
 ## feedbacks
 - id [PK]
