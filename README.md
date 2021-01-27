@@ -12,12 +12,11 @@ Commands:
 
 - `!add <text>` - adds a new submission to the group crit queue
 - `!count` - counts the number of submissions currently in the queue
-- `!check` - lists your rank, submissions and all feedback recieved
 - `!crit random` - sends you a random submission from the queue to critique (always returns a submission you haven't reviewed)
 - `!crit next` - sends you the next submission from the the queue to critique (doesn't shift the queue position, useful if you want to do them in order)
-- `!medals` - lists all medal rank requirements
-- `!rank` - displays your rank and how much much feedback you have given
-- `!submissions` - displays your crit submissions and feedback recieved
+- `!skipadd <text>` - adds a new submission with status 'skip' so it's not in the livestream queue
+- `!stats` - displays your level and how much feedback you have given
+- `!submissions` - displays your crit submissions and feedback received
 
 Admin Commands:
 
