@@ -13,11 +13,13 @@ class Member(commands.Cog):
         help="Add a submission to the queue (eg. \"!add submission text here\")",
     )
     async def add_crit(self, ctx, *, arg):
-        pos = _db.add_submission(ctx.message)
+        submission = _db.add_submission(ctx.message)
+        position = _db.get_submission_position_in_queue(submission.id)
+
         await _discord.dm(
             ctx.author,
             "Submission added! Current position in queue: "
-            + str(pos)
+            + str(position)
             + "\n"
             + "Link: ||<"
             + ctx.message.jump_url

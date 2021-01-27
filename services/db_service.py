@@ -1,9 +1,12 @@
-import datetime
+from datetime import datetime
 from pymongo import MongoClient
 from models.submission import Submission
 from models.user import User
 from models.feedback import Feedback
 from models.submission_info import SubmissionInfo
+import utils.date_util as date_util
+from utils.dict_to_obj import DictToObject
+from utils.list_dict_to_obj import ListDictToObj
 
 client = MongoClient('mongodb://localhost:27017')
 db = client['lmy']
@@ -12,32 +15,31 @@ db = client['lmy']
 # General #
 
 def get_max_id(db_table):
-    return db_table.find().sort({id: -1}).limit(1)
+    if db_table.count() == 0:
+        return 0
+    else:
+        return DictToObject(list(db_table.find().sort([("id", -1)]).limit(1))[0]).id
 
 
 # Submissions #
 
-def add_submission(message, status):
-    if status is None:
-        status = 'pending'
-
+def add_submission(message, status="pending"):
     submission = Submission(
         get_max_id(db.submissions) + 1,
         message.id,
-        message.author,
-        message.content,
+        message.author.id,
         message.jump_url,
-        datetime.now(),
+        date_util.datetime_to_str(datetime.now()),
         status
     )
 
-    db.submissions.insert_one(submission)
+    db.submissions.insert_one(submission.__dict__)
     return submission
 
 
 def add_submission_obj(submission):
     if isinstance(submission, Submission):
-        db.submissions.insert_one(submission)
+        db.submissions.insert_one(submission.__dict__)
     return submission
 
 
@@ -46,15 +48,15 @@ def get_submissions_by_user_id(user_id):
     if submissions.count() < 1:
         return None
     else:
-        return list(submissions)
+        return ListDictToObj(list(submissions))
 
 
 def get_ordered_queue_submissions():
-    submissions = db.submissions.find({'status': 'pending'}).sort({id: -1})
-    if submissions.count < 1:
+    submissions = db.submissions.find({'status': 'pending'}).sort([("id", -1)])
+    if submissions.count() < 1:
         return None
     else:
-        return list(submissions)
+        return ListDictToObj(list(submissions))
 
 
 def get_submission_position_in_queue(submission_id):
@@ -62,6 +64,7 @@ def get_submission_position_in_queue(submission_id):
     if submission is None:
         return -1
     else:
+        submission = DictToObject(submission)
         queue_subs = get_ordered_queue_submissions()
         if queue_subs is None:
             return -1
@@ -93,6 +96,8 @@ def get_submissions_with_info_by_user_id(user_id):
     user_subs = get_submissions_by_user_id(user_id)
     user_subs_with_positions = get_submission_positions_in_queue_multi(user_subs)
     feedbacks = db.feedbacks.find({'received_user_id': user_id})
+    if feedbacks.count() > 0:
+        feedbacks = ListDictToObj(list(feedbacks))
 
     for user_sub_with_pos in user_subs_with_positions:
         sub_feedbacks = []
@@ -121,7 +126,7 @@ def get_user_by_author_id(discord_user_id):
     user = db.users.find_one({'discord_user_id': discord_user_id})
     if user is None:
         user = add_new_user(discord_user_id)
-    return user
+    return DictToObject(user)
 
 
 def add_new_user(discord_user_id):
@@ -135,6 +140,7 @@ def add_new_user(discord_user_id):
         1,
         1  # Lowest level rank
     )
+    db.users.insert_one(user.__dict__)
     return user
 
 
@@ -142,14 +148,17 @@ def add_new_user(discord_user_id):
 
 def get_rank_by_user(user_id):
     user = db.users.find_one({'id': user_id})
-    return db.ranks.find_one({'id': user.rank_id})
+    if user is not None:
+        return DictToObject(user).rank_id
+    else:
+        return None
 
 
 def get_rank_by_name(name):
     rank = db.ranks.find_one({'rank_name': name})
     if rank is None:
         return None
-    return rank
+    return DictToObject(rank)
 
 
 # Feedbacks #
@@ -163,13 +172,15 @@ def add_feedback(message):
         message.channel.fetch_message(message.reference.id).author.id,
         message.jump_url
     )
+    db.feedbacks.insert_one(feedback.__dict__)
+
 
 def get_feedbacks_received(user_id):
     feedbacks = db.feedbacks.find({'received_user_id': user_id})
     if feedbacks.count() < 1:
         return None
     else:
-        return list(feedbacks)
+        return ListDictToObj(list(feedbacks))
 
 
 def get_feedbacks_given(user_id):
@@ -177,4 +188,4 @@ def get_feedbacks_given(user_id):
     if feedbacks.count() < 1:
         return None
     else:
-        return list(feedbacks)
+        return ListDictToObj(list(feedbacks))
