@@ -52,7 +52,7 @@ def get_submissions_by_user_id(user_id):
 
 
 def get_ordered_queue_submissions():
-    submissions = db.submissions.find({'status': 'pending'}).sort([("id", -1)])
+    submissions = db.submissions.find({'status': 'pending'}).sort([("id", 1)])
     if submissions.count() < 1:
         return None
     else:
@@ -71,7 +71,7 @@ def get_submission_position_in_queue(submission_id):
         else:
             for idx, item in enumerate(queue_subs):
                 if submission.id == item.id:
-                    return idx
+                    return idx+1
             return -1
 
 
