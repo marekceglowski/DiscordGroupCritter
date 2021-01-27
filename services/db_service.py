@@ -126,7 +126,9 @@ def get_user_by_author_id(discord_user_id):
     user = db.users.find_one({'discord_user_id': discord_user_id})
     if user is None:
         user = add_new_user(discord_user_id)
-    return DictToObject(user)
+        return user
+    else:
+        return DictToObject(user)
 
 
 def add_new_user(discord_user_id):
