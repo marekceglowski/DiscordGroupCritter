@@ -7,11 +7,8 @@ import discord
 from discord.ext import commands, tasks
 
 # Application-specific imports
-import commands.add as add
-import commands.submissions as check
-import commands.count as count
-import commands.critrandom as critrandom
-import listeners.on_message as on_message
+import cogs.member as MemberCog
+import cogs.admin as AdminCog
 
 token = open("token.txt", "r").read().strip()
 crit_channel_id = 802620586513530895
@@ -31,13 +28,8 @@ async def on_ready():
     print("We have logged in as {0.user}".format(lmy_bot))
 
 
-# Commands
-lmy_bot.add_cog(add.Add(lmy_bot))
-lmy_bot.add_cog(count.Count(lmy_bot))
-lmy_bot.add_cog(critrandom.CritRandom(lmy_bot))
-lmy_bot.add_cog(check.Submissions(lmy_bot))
-
-# Listeners
-lmy_bot.add_cog(on_message.OnMessage(lmy_bot))
+# Cogs
+lmy_bot.add_cog(MemberCog.Member(lmy_bot))
+lmy_bot.add_cog(AdminCog.Admin(lmy_bot))
 
 lmy_bot.run(token)
