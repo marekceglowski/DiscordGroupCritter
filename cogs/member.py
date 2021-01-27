@@ -61,8 +61,8 @@ class Member(commands.Cog):
     async def submissions(self, ctx):
         response_str = ""
 
-        user = _db.find_user_by_author_id(ctx.author.id)
-        user_subs_with_info = _db.find_submissions_with_info_by_user_id(user.id)
+        user = _db.get_user_by_author_id(ctx.author.id)
+        user_subs_with_info = _db.get_submissions_with_info_by_user_id(user.id)
 
         if user_subs_with_info is None or len(user_subs_with_info) == 0:
             response_str = "You currently have no submissions!"
