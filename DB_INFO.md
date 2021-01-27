@@ -6,7 +6,7 @@
 - user_id [FK]
 - jump_url
 - created_at
-- livestream_completed -- boolean
+- status -- queue status: options are 'pending', 'complete', or 'skip'
 
 ## users
 - id [PK]
@@ -26,5 +26,6 @@
 - id [PK]
 - message_id
 - submission_id [FK]
-- user_id [FK] -- user id of the person that gave the feedback
+- user_id [FK] -- user id of the person that sent feedback
+- received_user_id [FK] -- user id of the person that received feedback 
 - jump_url
