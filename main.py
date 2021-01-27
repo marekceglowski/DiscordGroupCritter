@@ -33,9 +33,11 @@ async def on_ready():
 
 # Commands
 lmy_bot.add_cog(add.Add(lmy_bot))
-lmy_bot.add_cog(check.Check(lmy_bot))
 lmy_bot.add_cog(count.Count(lmy_bot))
 lmy_bot.add_cog(critrandom.CritRandom(lmy_bot))
+lmy_bot.add_cog(check.Submissions(lmy_bot))
+
+# Listeners
 lmy_bot.add_cog(on_message.OnMessage(lmy_bot))
 
 lmy_bot.run(token)
