@@ -41,7 +41,7 @@ def add_submission_obj(submission):
     return submission
 
 
-def find_submissions_by_user_id(user_id):
+def get_submissions_by_user_id(user_id):
     submissions = db.submissions.find({'user_id': user_id})  # find() returns a cursor
     if submissions.count() < 1:
         return None
@@ -88,9 +88,9 @@ def get_submission_positions_in_queue_multi(submission_list):
         return subs_and_positions
 
 
-def find_submissions_with_info_by_user_id(user_id):
+def get_submissions_with_info_by_user_id(user_id):
     user_sub_infos = []  # list(SubmissionInfo() obj)
-    user_subs = find_submissions_by_user_id(user_id)
+    user_subs = get_submissions_by_user_id(user_id)
     user_subs_with_positions = get_submission_positions_in_queue_multi(user_subs)
     feedbacks = db.feedbacks.find({'received_user_id': user_id})
 
@@ -117,7 +117,7 @@ def user_exists(discord_user_id):
         return True
 
 
-def find_user_by_author_id(discord_user_id):
+def get_user_by_author_id(discord_user_id):
     user = db.users.find_one({'discord_user_id': discord_user_id})
     if user is None:
         user = add_new_user(discord_user_id)
