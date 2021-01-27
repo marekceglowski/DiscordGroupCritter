@@ -1,5 +1,5 @@
 from discord.ext import commands
-from services.db_service import db as _db
+import services.db_service as _db
 
 class Count(commands.Cog):
     def __init__(self, lmy_bot):
@@ -11,5 +11,5 @@ class Count(commands.Cog):
     async def count_crits(self, ctx):
 
         await ctx.send(
-            "Number of items in the queue is " + str(_db.submissions.count({"status" : "pending"})) + "."
+            "Number of items in the queue is " + str(_db.get_ordered_queue_submissions().count()) + "."
         )
