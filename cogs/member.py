@@ -94,3 +94,12 @@ class Member(commands.Cog):
                 response_str += "\n\n"
         response_str + "\n\n."
         await _discord.dm(ctx.author, response_str)
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author == self.bot.user:
+            return
+
+        # if message.channel.id == crit_channel_id:
+        if message.reference is not None:
+            _db.add_feedback(message)

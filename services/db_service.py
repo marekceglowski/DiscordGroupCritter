@@ -2,7 +2,7 @@ import datetime
 from pymongo import MongoClient
 from models.submission import Submission
 from models.user import User
-from models.rank import Rank
+from models.feedback import Feedback
 from models.submission_info import SubmissionInfo
 
 client = MongoClient('mongodb://localhost:27017')
@@ -153,6 +153,16 @@ def get_rank_by_name(name):
 
 
 # Feedbacks #
+
+def add_feedback(message):
+    feedback = Feedback(
+        get_max_id(db.feedback) + 1,
+        message.id,
+        message.reference.id,
+        message.author.id,
+        message.channel.fetch_message(message.reference.id).author.id,
+        message.jump_url
+    )
 
 def get_feedbacks_received(user_id):
     feedbacks = db.feedbacks.find({'received_user_id': user_id})
