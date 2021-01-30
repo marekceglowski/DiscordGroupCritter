@@ -36,16 +36,38 @@ class Member(commands.Cog):
         )
 
     @commands.command(
-        name="critRandom", help="Returns a random submission from the queue"
+        name="crit", help="Returns the next or a random submission from the queue"
     )
-    async def get_crit_random(self, ctx):
-        # Crit Random
-        submission_list = _db.get_ordered_queue_submissions()
-        submissions_with_positions = _db.get_submission_positions_in_queue_multi(submission_list)
+    async def get_crit(self, ctx, arg="next"):
+        # Crit
+        arg = arg.lower()
+        
+        valid_args = ["next", "random"]
 
-        sub_pos = random.choice(submissions_with_positions)
+        if arg not in valid_args:
+            await ctx.author.send("Invalid input please see `!help` for usage")
+            return
+
+        submission_list = _db.get_ordered_queue_submissions()
+
+        if submission_list is None:
+            await ctx.author.send("You have reviewed all avialable submissions")
+            return
+
+        submissions_with_positions = _db.get_submission_positions_in_queue_multi(
+            submission_list
+        )
+
+        if arg == "next":
+            review_text = "Submission to Review:\n"
+            sub_pos = submissions_with_positions[0]
+
+        elif arg == "random":
+            review_text = "Random submission to review:\n"
+            sub_pos = random.choice(submissions_with_positions)
+            
         text = (
-                "Random submission to review:\n"
+            review_text
                 + "Submission #"
                 + str(sub_pos[1])
                 + "\n"
