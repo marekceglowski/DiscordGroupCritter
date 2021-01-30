@@ -105,5 +105,7 @@ class Member(commands.Cog):
             return
 
         # if message.channel.id == crit_channel_id:
+        # TODO check that message.reference.id is in the DB
         if message.reference is not None:
-            _db.add_feedback(message)
+            replied_message = await _discord.get_replied_message(message)
+            _db.add_feedback(message, replied_message)
