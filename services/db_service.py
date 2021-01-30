@@ -112,6 +112,14 @@ def get_submissions_with_info_by_user_id(user_id):
     return user_sub_infos
 
 
+def get_submission_count():
+    submissions = get_ordered_queue_submissions()
+    if submissions is None:
+        return 0
+    else:
+        return len(submissions)
+
+
 # Users #
 
 def user_exists(discord_user_id):

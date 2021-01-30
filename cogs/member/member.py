@@ -32,7 +32,9 @@ class Member(commands.Cog):
     )
     async def count_crits(self, ctx):
         await ctx.send(
-            "Number of items in the queue is " + str(_db.get_ordered_queue_submissions().count()) + "."
+            "Number of items in the queue is "
+            + str(_db.get_submission_count())
+            + "."
         )
 
     @commands.command(
