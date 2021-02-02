@@ -169,9 +169,9 @@ def add_feedback(message):
     feedback = Feedback(
         get_max_id(db.feedback) + 1,
         message.id,
-        message.reference.id,
+        message.reference.message_id,
         message.author.id,
-        message.channel.fetch_message(message.reference.id).author.id,
+        message.reference.resolved.author.id,
         message.jump_url
     )
     db.feedbacks.insert_one(feedback.__dict__)
