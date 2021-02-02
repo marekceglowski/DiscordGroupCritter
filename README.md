@@ -9,6 +9,7 @@ The GroupCritter bot will add the following features:
 
 Other features include:
 - Ping the user when their livestream crit is next
+- Ping the user when their submission was given feedback
 - Post milestone announcements when people level up a certain amount
 
 Commands:
