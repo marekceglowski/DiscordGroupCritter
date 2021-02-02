@@ -18,14 +18,13 @@ def get_max_id(db_table):
     if db_table.count() == 0:
         return 0
     else:
-        return DictToObject(list(db_table.find().sort([("id", -1)]).limit(1))[0]).id
+        return DictToObject(list(db_table.find().sort([("created_at", -1)]).limit(1))[0]).id
 
 
 # Submissions #
 
 def add_submission(message, status="pending"):
     submission = Submission(
-        get_max_id(db.submissions) + 1,
         message.id,
         message.author.id,
         message.jump_url,
@@ -52,15 +51,15 @@ def get_submissions_by_user_id(user_id):
 
 
 def get_ordered_queue_submissions():
-    submissions = db.submissions.find({'status': 'pending'}).sort([("id", 1)])
+    submissions = db.submissions.find({'status': 'pending'}).sort([("created_at", 1)])
     if submissions.count() < 1:
         return None
     else:
         return ListDictToObj(list(submissions))
 
 
-def get_submission_position_in_queue(submission_id):
-    submission = db.submissions.find_one({'id': submission_id})
+def get_submission_position_in_queue(message_id):
+    submission = db.submissions.find_one({'message_id': message_id})
     if submission is None:
         return -1
     else:
@@ -70,7 +69,7 @@ def get_submission_position_in_queue(submission_id):
             return -1
         else:
             for idx, item in enumerate(queue_subs):
-                if submission.id == item.id:
+                if submission.message_id == item.message_id:
                     return idx+1
             return -1
 
@@ -85,7 +84,7 @@ def get_submission_positions_in_queue_multi(submission_list):
         for idx, item in enumerate(queue_subs):
             current_pos = -1
             for submission in submission_list:
-                if submission.id == item.id:
+                if submission.message_id == item.message_id:
                     current_pos = idx
             subs_and_positions.append((submission, current_pos))
         return subs_and_positions
@@ -102,7 +101,7 @@ def get_submissions_with_info_by_user_id(user_id):
     for user_sub_with_pos in user_subs_with_positions:
         sub_feedbacks = []
         for fb in feedbacks:
-            if fb.submission_id == user_sub_with_pos[0].id:
+            if fb.submission_id == user_sub_with_pos[0].message_id:
                 sub_feedbacks.append(fb)
         user_sub_infos.append(SubmissionInfo(
             user_sub_with_pos[0],
@@ -114,33 +113,27 @@ def get_submissions_with_info_by_user_id(user_id):
 
 # Users #
 
-def user_exists(discord_user_id):
-    user = db.users.find_one({'discord_user_id': discord_user_id})
+def user_exists(user_id):
+    user = db.users.find_one({'user_id': user_id})
     if user is None:
         return False
     else:
         return True
 
 
-def get_user_by_author_id(discord_user_id):
-    user = db.users.find_one({'discord_user_id': discord_user_id})
+def get_user_by_author_id(user_id):
+    user = db.users.find_one({'user_id': user_id})
     if user is None:
-        user = add_new_user(discord_user_id)
+        user = add_new_user(user_id)
         return user
     else:
         return DictToObject(user)
 
 
-def add_new_user(discord_user_id):
-    user = user_exists(discord_user_id)
-    if user is not None:
-        return user
+def add_new_user(user_id):
     user = User(
-        get_max_id(db.users) + 1,
-        discord_user_id,
-        0,
-        1,
-        1  # Lowest level rank
+        user_id,
+        None  # Lowest level rank
     )
     db.users.insert_one(user.__dict__)
     return user
@@ -149,7 +142,7 @@ def add_new_user(discord_user_id):
 # Ranks #
 
 def get_rank_by_user(user_id):
-    user = db.users.find_one({'id': user_id})
+    user = db.users.find_one({'user_id': user_id})
     if user is not None:
         return DictToObject(user).rank_id
     else:
@@ -167,7 +160,6 @@ def get_rank_by_name(name):
 
 def add_feedback(message):
     feedback = Feedback(
-        get_max_id(db.feedback) + 1,
         message.id,
         message.reference.message_id,
         message.author.id,

@@ -2,7 +2,7 @@ import random
 from discord.ext import commands
 import services.db_service as _db
 import services.discord_service as _discord
-
+import utils.date_util as date_util
 
 class Member(commands.Cog):
     def __init__(self, bot):
@@ -14,7 +14,7 @@ class Member(commands.Cog):
     )
     async def add_crit(self, ctx, *, arg):
         submission = _db.add_submission(ctx.message)
-        position = _db.get_submission_position_in_queue(submission.id)
+        position = _db.get_submission_position_in_queue(submission.message_id)
 
         await _discord.dm(
             ctx.author,
@@ -64,24 +64,24 @@ class Member(commands.Cog):
         response_str = ""
 
         user = _db.get_user_by_author_id(ctx.author.id)
-        user_subs_with_info = _db.get_submissions_with_info_by_user_id(user.id)
+        user_subs_with_info = _db.get_submissions_with_info_by_user_id(user.user_id)
 
         if user_subs_with_info is None or len(user_subs_with_info) == 0:
             response_str = "You currently have no submissions!"
         else:
             response_str = (
-                    "> .\n**===============**\n"
+                    ".\n> **==============**\n"
                     + "> **Your Submissions:**\n"
-                    + "> **===============**\n\n"
+                    + "> **==============**\n\n"
             )
             for s_idx, item in enumerate(user_subs_with_info, start=1):
-                user_sub = user_subs_with_info.submission
-                sub_feedbacks = user_subs_with_info.feedbacks
-                sub_queue_pos = user_subs_with_info.queue_pos
+                user_sub = item.submission
+                sub_feedbacks = item.feedbacks
+                sub_queue_pos = item.queue_pos
 
                 response_str += (
                         "> **[Submission " + str(s_idx) + "]** \n> "
-                        + user_sub.created_at.strftime("%Y-%m-%d %H:%M:%S")
+                        + user_sub.created_at
                         + " -- Position in queue: " + str(sub_queue_pos) + "\n"
                         + "> Link: ||<"
                         + user_sub.jump_url
@@ -102,7 +102,6 @@ class Member(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        # if message.channel.id == crit_channel_id:
         if message.reference is not None:
             _db.add_feedback(message)
 
