@@ -105,3 +105,7 @@ class Member(commands.Cog):
         # if message.channel.id == crit_channel_id:
         if message.reference is not None:
             _db.add_feedback(message)
+
+
+def setup(bot):
+    bot.add_cog(Member(bot))

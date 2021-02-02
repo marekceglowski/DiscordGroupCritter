@@ -6,9 +6,6 @@ from datetime import datetime
 import discord
 from discord.ext import commands, tasks
 
-# Application-specific imports
-import cogs.member as MemberCog
-import cogs.admin as AdminCog
 
 token = open("token.txt", "r").read().strip()
 crit_channel_id = 802620586513530895
@@ -29,7 +26,8 @@ async def on_ready():
 
 
 # Cogs
-lmy_bot.add_cog(MemberCog.Member(lmy_bot))
-lmy_bot.add_cog(AdminCog.Admin(lmy_bot))
+lmy_bot.load_extension("cogs.admin")
+lmy_bot.load_extension("cogs.member")
+
 
 lmy_bot.run(token)
