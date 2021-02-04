@@ -48,7 +48,10 @@ class Member(commands.Cog):
             await ctx.author.send("Invalid input please see `!help` for usage")
             return
 
-        submission_list = _db.get_ordered_queue_submissions()
+        user = _db.get_user_by_author_id(ctx.author.id)
+        submission_list = _db.get_ordered_queue_submissions(
+            not_user_id=user.user_id, check_user_feedback_id=user.user_id
+        )
 
         if submission_list is None:
             await ctx.author.send("You have reviewed all avialable submissions")
