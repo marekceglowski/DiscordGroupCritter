@@ -86,7 +86,7 @@ def get_submission_positions_in_queue_multi(submission_list):
             for submission in submission_list:
                 if submission.message_id == item.message_id:
                     current_pos = idx
-            subs_and_positions.append((submission, current_pos))
+                    subs_and_positions.append((submission, current_pos))
         return subs_and_positions
 
 
