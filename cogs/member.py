@@ -31,9 +31,16 @@ class Member(commands.Cog):
         help="Displays the number of submissions in the queue"
     )
     async def count_crits(self, ctx):
-        await ctx.send(
-            "Number of items in the queue is " + str(len(_db.get_ordered_queue_submissions())) + "."
-        )
+
+        subs_queue = _db.get_ordered_queue_submissions()
+
+        if subs_queue is None:
+            queue_count = 0
+
+        else:
+            queue_count = len(subs_queue)
+
+        await ctx.send("Number of items in the queue is " + str(queue_count) + ".")
 
     @commands.command(
         name="critRandom", help="Returns a random submission from the queue"
