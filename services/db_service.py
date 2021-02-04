@@ -50,8 +50,24 @@ def get_submissions_by_user_id(user_id):
         return ListDictToObj(list(submissions))
 
 
-def get_ordered_queue_submissions():
-    submissions = db.submissions.find({'status': 'pending'}).sort([("created_at", 1)])
+def get_ordered_queue_submissions(not_user_id=None, check_user_feedback_id=None):
+
+    message_ids = []
+
+    if check_user_feedback_id is not None:
+        feedback = get_feedbacks_given(check_user_feedback_id)
+
+        if feedback is not None:
+            message_ids = [entry.submission_id for entry in feedback]
+
+    submissions = db.submissions.find(
+        {
+            "status": "pending",
+            "user_id": {"$ne": not_user_id},
+            "message_id": {"$nin": message_ids},
+        }
+    ).sort([("created_at", 1)])
+    
     if submissions.count() < 1:
         return None
     else:
