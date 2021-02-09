@@ -129,6 +129,23 @@ class Member(commands.Cog):
         response_str + "\n\n."
         await _discord.dm(ctx.author, response_str)
 
+    @commands.command(
+        name="feedback",
+        help="Returns your entered submissions and any feedback they have received",
+    )
+    async def feedback(self, ctx, arg="both"):
+
+        if arg == 'given' or arg == 'both':
+            response_str = "**> ============\n> Feedback Given:\n> ============**\n\n"
+            feedbacks = _db.get_feedbacks_given(ctx.author.id)
+            for idx, feedback in enumerate(feedbacks):
+                response_str += '> ' + str(idx+1) + '. ||<' + feedback.jump_url + '>||\n\n'
+            await _discord.dm(ctx.author, response_str)
+
+        if arg == 'received' or arg == 'both':
+            await self.submissions(ctx)
+
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
@@ -136,7 +153,6 @@ class Member(commands.Cog):
 
         if message.reference is not None:
             _db.add_feedback(message)
-
 
 def setup(bot):
     bot.add_cog(Member(bot))
