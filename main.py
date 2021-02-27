@@ -6,10 +6,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands, tasks
 
-
 token = open("token.txt", "r").read().strip()
-crit_channel_id = 802620586513530895
-
 submission_list = []
 
 intents = discord.Intents(messages=True, guilds=False, members=False)

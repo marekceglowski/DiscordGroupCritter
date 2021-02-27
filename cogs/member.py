@@ -13,6 +13,9 @@ class Member(commands.Cog):
         help="Add a submission to the queue (eg. \"!add submission text here\")",
     )
     async def add_crit(self, ctx, *, arg):
+        if not _discord.is_group_crit_channel(ctx):
+            return
+
         submission = _db.add_submission(ctx.message)
         position = _db.get_submission_position_in_queue(submission.message_id)
 
