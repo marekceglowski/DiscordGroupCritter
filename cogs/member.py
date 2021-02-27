@@ -14,20 +14,20 @@ class Member(commands.Cog):
     )
     async def add_crit(self, ctx, *, arg):
         if not _discord.is_group_crit_channel(ctx):
-            await _discord.dm(ctx.author, "Must add using the group-crit channel!")
+            await ctx.author.send("Must add using the group-crit channel!")
             return
 
         submission = _db.add_submission(ctx.message)
         position = _db.get_submission_position_in_queue(submission.message_id)
 
-        await _discord.dm(
-            ctx.author,
+        await ctx.author.send(
             "Submission added! Current position in queue: "
             + str(position)
             + "\n"
             + "Link: ||<"
             + ctx.message.jump_url
             + ">||\n",
+            embed=None
         )
 
     @commands.command(
@@ -43,14 +43,13 @@ class Member(commands.Cog):
         else:
             queue_count = len(subs_queue)
 
-        await ctx.send("Number of items in the queue is " + str(queue_count) + ".")
+        await ctx.author.send("Number of items in the queue is " + str(queue_count) + ".")
         await ctx.message.delete()
 
     @commands.command(
         name="crit", help="Returns the next or a random submission from the queue"
     )
     async def get_crit(self, ctx, arg="next"):
-        # Crit
         arg = arg.lower()
         
         valid_args = ["next", "random"]
@@ -90,7 +89,7 @@ class Member(commands.Cog):
                 + "\n"
                 + "*Go to the above link, and reply to the message to give feedback.*\n."
         )
-        await _discord.dm(ctx.author, text)
+        await ctx.author.send(text, embed=None)
         await ctx.message.delete()
 
     @commands.command(
@@ -132,7 +131,7 @@ class Member(commands.Cog):
                         )
                 response_str += "\n\n"
         response_str + "\n\n."
-        await _discord.dm(ctx.author, response_str)
+        await ctx.author.send(response_str, embed=None)
         await ctx.message.delete()
 
     @commands.command(
@@ -146,7 +145,7 @@ class Member(commands.Cog):
             feedbacks = _db.get_feedbacks_given(ctx.author.id)
             for idx, feedback in enumerate(feedbacks):
                 response_str += '> ' + str(idx+1) + '. ||<' + feedback.jump_url + '>||\n\n'
-            await _discord.dm(ctx.author, response_str)
+            await ctx.author.send(response_str, embed=None)
 
         if arg == 'received' or arg == 'both':
             await self.submissions(ctx)
