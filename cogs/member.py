@@ -14,6 +14,7 @@ class Member(commands.Cog):
     )
     async def add_crit(self, ctx, *, arg):
         if not _discord.is_group_crit_channel(ctx):
+            await _discord.dm(ctx.author, "Must add using the group-crit channel!")
             return
 
         submission = _db.add_submission(ctx.message)
@@ -34,7 +35,6 @@ class Member(commands.Cog):
         help="Displays the number of submissions in the queue"
     )
     async def count_crits(self, ctx):
-
         subs_queue = _db.get_ordered_queue_submissions()
 
         if subs_queue is None:
@@ -44,6 +44,7 @@ class Member(commands.Cog):
             queue_count = len(subs_queue)
 
         await ctx.send("Number of items in the queue is " + str(queue_count) + ".")
+        await ctx.message.delete()
 
     @commands.command(
         name="crit", help="Returns the next or a random submission from the queue"
@@ -90,6 +91,7 @@ class Member(commands.Cog):
                 + "*Go to the above link, and reply to the message to give feedback.*\n."
         )
         await _discord.dm(ctx.author, text)
+        await ctx.message.delete()
 
     @commands.command(
         name="submissions",
@@ -131,6 +133,7 @@ class Member(commands.Cog):
                 response_str += "\n\n"
         response_str + "\n\n."
         await _discord.dm(ctx.author, response_str)
+        await ctx.message.delete()
 
     @commands.command(
         name="feedback",
@@ -147,6 +150,7 @@ class Member(commands.Cog):
 
         if arg == 'received' or arg == 'both':
             await self.submissions(ctx)
+        await ctx.message.delete()
 
 
     @commands.Cog.listener()
