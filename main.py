@@ -12,7 +12,7 @@ crit_channel_id = 802620586513530895
 
 submission_list = []
 
-intents = discord.Intents(messages=True, guilds=True, members=False)
+intents = discord.Intents(messages=True, guilds=True, members=True)
 lmy_bot = commands.Bot(command_prefix="!", intents=intents)
 
 
