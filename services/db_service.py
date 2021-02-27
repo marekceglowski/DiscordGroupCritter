@@ -127,6 +127,14 @@ def get_submissions_with_info_by_user_id(user_id):
     return user_sub_infos
 
 
+def set_submission_complete(submission):
+
+    message_id = submission.message_id
+    item_query = {"message_id": message_id}
+    update = {"$set": {"status": "complete"}}
+    db.submissions.update_one(item_query, update)
+
+
 # Users #
 
 def user_exists(user_id):

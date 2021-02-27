@@ -9,7 +9,7 @@ from discord.ext import commands, tasks
 token = open("token.txt", "r").read().strip()
 submission_list = []
 
-intents = discord.Intents(messages=True, guilds=False, members=False)
+intents = discord.Intents(messages=True, guilds=True, members=True)
 lmy_bot = commands.Bot(command_prefix="!", intents=intents)
 
 
