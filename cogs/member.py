@@ -14,21 +14,29 @@ class Member(commands.Cog):
     )
     async def add_crit(self, ctx, *, arg):
         if not _discord.is_group_crit_channel(ctx):
-            await ctx.author.send("Must add using the group-crit channel!")
+            await ctx.author.send("Must add using the group-crit channel.")
             return
 
-        submission = _db.add_submission(ctx.message)
-        position = _db.get_submission_position_in_queue(submission.message_id)
+        if not arg:
+            await ctx.author.send("Must include message with your submission.")
+            return
 
-        await ctx.author.send(
-            "Submission added! Current position in queue: "
-            + str(position)
-            + "\n"
-            + "Link: ||<"
-            + ctx.message.jump_url
-            + ">||\n",
-            embed=None
-        )
+        if arg.lower().startswith('nolive'):
+            submission = _db.add_submission(ctx.message, 'skip')
+            await ctx.author.send('Submission added! It will not be part of the livestream.')
+        else:
+            submission = _db.add_submission(ctx.message)
+            position = _db.get_submission_position_in_queue(submission.message_id)
+
+            await ctx.author.send(
+                "Submission added! Current position in queue: "
+                + str(position)
+                + "\n"
+                + "Link: ||<"
+                + ctx.message.jump_url
+                + ">||\n",
+                embed=None
+            )
 
     @commands.command(
         name="count",
