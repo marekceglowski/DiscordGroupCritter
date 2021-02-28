@@ -26,7 +26,7 @@ Commands:
 Admin Commands:
 
 - `!next` - moves the queue up one spot and displays a link to the submission
-- `!currentfeedback` - shows a list of all feedback given to the current queue submission
+- `!info` - shows a list of all feedback given to the current queue submission
 
 Database Structure can be found here:
 
