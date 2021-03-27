@@ -35,10 +35,45 @@ class Admin(commands.Cog):
             next_id = submission_list[1].user_id
             next_author = self.bot.get_user(next_id)
             link_text = "Link: " + submission_list[1].jump_url + "\n"
-            
+
             await next_author.send(
                 "Your submission is next in the queue.\n" + link_text
             )
+
+    @commands.command(name="info", help="Returns feedback on current critique")
+    @commands.has_permissions(administrator=True)
+    async def info(self, ctx):
+        current_submission = _db.get_submission_latest_complete()
+
+        if current_submission is None:
+            ctx.author.send("No submission available")
+            return
+
+        submission_user = self.bot.get_user(current_submission.user_id)
+        if submission_user is None:
+            submission_author = "Anon"
+        else:
+            submission_author = submission_user.display_name
+
+        message_text = (
+            "Currently reviewing a submission by {}.\n".format(submission_author)
+            + "Link: "
+            + current_submission.jump_url
+            + "\n"
+        )
+
+        feedbacks = _db.get_feedbacks_on_submission(current_submission.message_id)
+
+        if feedbacks is not None:
+            feedback_text = "The submission has the following feedback:\n"
+            for feedback in feedbacks:
+                for idx, feedback in enumerate(feedbacks):
+                    feedback_text += (
+                        "> " + str(idx + 1) + ". ||<" + feedback.jump_url + ">||\n\n"
+                    )
+            message_text += feedback_text
+
+        await ctx.author.send(message_text)
 
 
 def setup(bot):

@@ -134,6 +134,18 @@ def set_submission_complete(submission):
     update = {"$set": {"status": "complete"}}
     db.submissions.update_one(item_query, update)
 
+def get_submission_latest_complete():
+    submission = db.submissions.find(
+        {
+            "status": "complete"
+        }
+    ).sort([("created_at", -1)]).limit(1)
+
+    if submission.count() < 1:
+        return None
+    else:
+        return ListDictToObj(list(submission))[0]
+
 
 # Users #
 
@@ -204,6 +216,13 @@ def get_feedbacks_received(user_id):
 def get_feedbacks_given(user_id):
     feedbacks = db.feedbacks.find({'user_id': user_id})  # returns a cursor
     if feedbacks.count() < 1:
+        return None
+    else:
+        return ListDictToObj(list(feedbacks))
+
+def get_feedbacks_on_submission(submission_id):
+    feedbacks = db.feedbacks.find({'submission_id':submission_id})
+    if feedbacks.count() <1:
         return None
     else:
         return ListDictToObj(list(feedbacks))
