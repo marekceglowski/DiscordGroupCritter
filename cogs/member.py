@@ -232,6 +232,9 @@ Admin Commands:
         submission = _db.get_submission_by_message_id(message.reference.message_id)
         if submission is None:
             return
+        feedbacks = _db.get_feedbacks_for_submission_by_user(submission.message_id, message.author.id)
+        if feedbacks is not None:
+            return
         _db.add_feedback(message)
         _db.add_user_if_not_exist(message.author.id)
 

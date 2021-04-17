@@ -241,3 +241,10 @@ def get_feedbacks_for_submission(submission_id):
         return ListDictToObj(list(feedbacks))
     else:
         return None
+
+def get_feedbacks_for_submission_by_user(submission_id, user_id):
+    feedbacks = db.feedbacks.find({'submission_id': submission_id, 'user_id': user_id})
+    if feedbacks.count() > 0:
+        return ListDictToObj(list(feedbacks))
+    else:
+        return None
