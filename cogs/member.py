@@ -140,8 +140,8 @@ class Member(commands.Cog):
                         )
                 response_str += "\n\n"
         response_str + "\n\n."
-        await ctx.author.send(response_str, embed=None)
         await ctx.message.delete()
+        await _discord.dm(ctx.author, response_str)
 
     @commands.command(
         name="feedback",
