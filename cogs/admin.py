@@ -9,9 +9,12 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.command(name="next", help="Return next submission from queue")
-    @commands.has_permissions(administrator=True)
     async def next(self, ctx):
 
+        authorperms = ctx.author.permissions_in(ctx.channel)
+        if not authorperms.manage_messages:
+            await ctx.author.send("You don't have the permissions to do that here!")
+            return
         submission_list = _db.get_ordered_queue_submissions()
 
         if submission_list is None:
