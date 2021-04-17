@@ -158,6 +158,29 @@ class Member(commands.Cog):
         if arg == 'received' or arg == 'both':
             await self.submissions(ctx)
         await ctx.message.delete()
+    @commands.command(
+        name="help",
+        help="Help"
+    )
+    async def help(self, ctx):
+        response_str = """
+Commands:
+
+- `!add <text>` - adds a new submission to the group crit queue
+- `!add no-live-crit <text>` - adds a new submission with status 'skip' so it's not in the livestream queue
+- `!count` - counts the number of submissions currently in the queue
+- `!crit random` - sends you a random submission from the queue to critique (always returns a submission you haven't reviewed)
+- `!crit next` - sends you the next submission from the the queue to critique (doesn't shift the queue position, useful if you want to do them in order)
+- `!feedback [given|received|both]` - displays feedback you have given, received, or both
+- `!stats` - displays your level and how much feedback you have given
+- `!submissions` - displays your crit submissions and feedback received
+
+Admin Commands:
+
+- `!next` - moves the queue up one spot and displays a link to the submission
+- `!info` - shows a list of all feedback given to the current queue submission        
+"""
+        await ctx.author.send(response_str, embed=None)
 
 
     @commands.Cog.listener()
