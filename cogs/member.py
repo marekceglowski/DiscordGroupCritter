@@ -161,6 +161,7 @@ class Member(commands.Cog):
             await self.submissions(ctx)
         if not isinstance(ctx.channel, discord.channel.DMChannel):
             await ctx.message.delete()
+
     @commands.command(
         name="clear",
         help="Clears messages from GroupCritter in the DM Channel",
@@ -173,6 +174,7 @@ class Member(commands.Cog):
 
         if not isinstance(ctx.channel, discord.channel.DMChannel):
             await ctx.message.delete()
+
     @commands.command(
         name="help",
         help="Help"
