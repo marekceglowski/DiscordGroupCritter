@@ -53,7 +53,8 @@ class Member(commands.Cog):
             queue_count = len(subs_queue)
 
         await ctx.author.send("Number of items in the queue is " + str(queue_count) + ".")
-        await ctx.message.delete()
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
 
     @commands.command(
         name="crit", help="Returns the next or a random submission from the queue"
@@ -99,7 +100,8 @@ class Member(commands.Cog):
                 + "*Go to the above link, and reply to the message to give feedback.*\n."
         )
         await ctx.author.send(text, embed=None)
-        await ctx.message.delete()
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
 
     @commands.command(
         name="submissions",
@@ -140,8 +142,9 @@ class Member(commands.Cog):
                         )
                 response_str += "\n\n"
         response_str + "\n\n."
-        await ctx.message.delete()
         await _discord.dm(ctx.author, response_str)
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
 
     @commands.command(
         name="feedback",
