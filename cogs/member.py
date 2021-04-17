@@ -21,7 +21,7 @@ class Member(commands.Cog):
             await ctx.author.send("Must include message with your submission.")
             return
 
-        if arg.lower().startswith('nolive'):
+        if arg.lower().startswith('no-live-crit'):
             submission = _db.add_submission(ctx.message, 'skip')
             await ctx.author.send('Submission added! It will not be part of the livestream.')
         else:
