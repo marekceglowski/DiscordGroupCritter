@@ -32,6 +32,7 @@ class Member(commands.Cog):
             position = _db.get_submission_position_in_queue(submission.message_id)
 
             await ctx.author.send("Submission added! Queue position: " + str(position) + "\n")
+        _db.add_user_if_not_exist(ctx.author.id)
 
     @commands.command(
         name="count",
@@ -152,6 +153,7 @@ class Member(commands.Cog):
 
         if arg == 'given' or arg == 'both':
             response_str = "**> ============\n> Feedback Given:\n> ============**\n\n"
+            _db.add_user_if_not_exist(ctx.author.id)
             feedbacks = _db.get_feedbacks_given(ctx.author.id)
             for idx, feedback in enumerate(feedbacks):
                 response_str += '> ' + str(idx+1) + '. ||<' + feedback.jump_url + '>||\n\n'
@@ -231,6 +233,7 @@ Admin Commands:
         if submission is None:
             return
         _db.add_feedback(message)
+        _db.add_user_if_not_exist(message.author.id)
 
         submission_author_id = message.reference.resolved.author.id
         submission_author = _db.get_user_by_author_id(submission_author_id)
@@ -238,7 +241,7 @@ Admin Commands:
             sub_author_discord = self.bot.get_user(submission_author_id)
             if sub_author_discord is not None:
                 message_text = (
-                    "Your following submission has recieved feedback:\n"
+                    "Your following submission has received feedback:\n"
                     + "Link: "
                     + submission.jump_url
                     + "\n\n"

@@ -33,6 +33,7 @@ def add_submission(message, status="pending"):
     )
 
     db.submissions.insert_one(submission.__dict__)
+
     return submission
 
 
@@ -170,6 +171,10 @@ def get_user_by_author_id(user_id):
         return user
     else:
         return DictToObject(user)
+
+
+def add_user_if_not_exist(user_id):
+    return get_user_by_author_id(user_id)
 
 
 def add_new_user(user_id):
