@@ -160,6 +160,18 @@ class Member(commands.Cog):
             await self.submissions(ctx)
         await ctx.message.delete()
     @commands.command(
+        name="clear",
+        help="Clears messages from GroupCritter in the DM Channel",
+    )
+    async def clear(self, ctx, arg='none'):
+        if isinstance(ctx.channel, discord.channel.DMChannel):
+            async for message in ctx.channel.history(limit=200):
+                if message.author == self.bot.user:
+                    await message.delete()
+
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
+    @commands.command(
         name="help",
         help="Help"
     )
