@@ -21,6 +21,7 @@ def get_name(author):
 async def on_ready():
     print("We have logged in as {0.user}".format(lmy_bot))
 
+lmy_bot.remove_command("help") # use custom help command
 
 # Cogs
 lmy_bot.load_extension("cogs.admin")
