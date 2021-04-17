@@ -193,6 +193,7 @@ Commands:
 - `!feedback [given|received|both]` - displays feedback you have given, received, or both
 - `!stats` - displays your level and how much feedback you have given
 - `!submissions` - displays your crit submissions and feedback received
+- `!toggleDM` - toggles DMs from GroupCritter when feedback is received
 
 Admin Commands:
 
@@ -235,6 +236,7 @@ Admin Commands:
         feedbacks = _db.get_feedbacks_for_submission_by_user(submission.message_id, message.author.id)
         if feedbacks is not None:
             return
+
         _db.add_feedback(message)
         _db.add_user_if_not_exist(message.author.id)
 
