@@ -12,6 +12,7 @@ Note: PK is treated as a primary key and FK is treated as a foreign key.
 ## users
 - user_id [PK] -- user id from discord
 - rank_id [FK] -- default: None
+- dm_on_feedback -- default: True
 
 ## ranks
 - role_id [PK] -- role id from discord

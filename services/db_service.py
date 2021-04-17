@@ -49,6 +49,12 @@ def get_submissions_by_user_id(user_id):
     else:
         return ListDictToObj(list(submissions))
 
+def get_submission_by_message_id(message_id):
+    submission = db.submissions.find_one({"message_id" : message_id})
+    if submission is None:
+        return None
+    else:
+        return DictToObject(submission)
 
 def get_ordered_queue_submissions(not_user_id=None, check_user_feedback_id=None, get_completed=False):
 
@@ -174,7 +180,11 @@ def add_new_user(user_id):
     db.users.insert_one(user.__dict__)
     return user
 
-
+def user_toggle_feedback_dm(user):
+    item_query = {"user_id": user.user_id}
+    update = {"$set": {"dm_on_feedback": not(user.dm_on_feedback)}}
+    db.users.update_one(item_query, update)
+    
 # Ranks #
 
 def get_rank_by_user(user_id):

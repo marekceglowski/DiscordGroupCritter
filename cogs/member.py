@@ -199,6 +199,24 @@ Admin Commands:
 """
         await ctx.author.send(response_str, embed=None)
 
+    @commands.command(
+        name="toggleDM",
+        help="""If you are recieving DMs from the bot on submission feedback, 
+            this will turn that feature off and vice-versa if you are not receiving DMs""",
+    )
+    async def toggle_feedback_dm(self, ctx):
+        user = _db.get_user_by_author_id(ctx.author.id)
+        _db.user_toggle_feedback_dm(user)
+        dm_on_feedback = not (user.dm_on_feedback)
+        if dm_on_feedback:
+            dm_bool_text = ""
+        else:
+            dm_bool_text = "not"
+        await ctx.author.send(
+            "You will now {} receive DMs when you receive feedback.".format(
+                dm_bool_text
+            )
+        )
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -206,7 +224,31 @@ Admin Commands:
             return
 
         if message.reference is not None:
-            _db.add_feedback(message)
+            await self.process_feedback(message)
+
+    async def process_feedback(self, message):
+        submission = _db.get_submission_by_message_id(message.reference.message_id)
+        if submission is None:
+            return
+        _db.add_feedback(message)
+
+        submission_author_id = message.reference.resolved.author.id
+        submission_author = _db.get_user_by_author_id(submission_author_id)
+        if submission_author.dm_on_feedback:
+            sub_author_discord = self.bot.get_user(submission_author_id)
+            if sub_author_discord is not None:
+                message_text = (
+                    "Your following submission has recieved feedback:\n"
+                    + "Link: "
+                    + submission.jump_url
+                    + "\n\n"
+                    + "Feedback from {}\n".format(message.author.display_name)
+                    + "Link: "
+                    + message.jump_url
+                    + "\n"
+                )
+                await sub_author_discord.send(message_text)
+
 
 def setup(bot):
     bot.add_cog(Member(bot))

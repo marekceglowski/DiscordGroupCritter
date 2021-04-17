@@ -22,8 +22,9 @@ Commands:
 - `!feedback [given|received|both]` - displays feedback you have given, received, or both
 - `!stats` - displays your level and how much feedback you have given
 - `!submissions` - displays your crit submissions and feedback received
+- `!toggleDM` - toggles DMs from GroupCritter when feedback is received
 
-Admin Commands:
+Admin-only Commands:
 
 - `!next` - moves the queue up one spot and displays a link to the submission
 - `!info` - shows a list of all feedback given to the current queue submission
