@@ -147,7 +147,11 @@ class Member(commands.Cog):
         name="feedback",
         help="Returns your entered submissions and any feedback they have received",
     )
-    async def feedback(self, ctx, arg="both"):
+    async def feedback(self, ctx, arg='none'):
+
+        if arg != 'given' and arg != 'received' and arg != 'both':
+            response_str = "Use command `!feedback given`, `!feedback received`, or `!feedback both`"
+            await ctx.author.send(response_str, embed=None)
 
         if arg == 'given' or arg == 'both':
             response_str = "**> ============\n> Feedback Given:\n> ============**\n\n"
@@ -158,7 +162,8 @@ class Member(commands.Cog):
 
         if arg == 'received' or arg == 'both':
             await self.submissions(ctx)
-        await ctx.message.delete()
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
     @commands.command(
         name="clear",
         help="Clears messages from GroupCritter in the DM Channel",
