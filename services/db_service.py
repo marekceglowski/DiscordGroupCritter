@@ -50,7 +50,7 @@ def get_submissions_by_user_id(user_id):
         return ListDictToObj(list(submissions))
 
 
-def get_ordered_queue_submissions(not_user_id=None, check_user_feedback_id=None):
+def get_ordered_queue_submissions(not_user_id=None, check_user_feedback_id=None, get_completed=False):
 
     message_ids = []
 
@@ -62,7 +62,7 @@ def get_ordered_queue_submissions(not_user_id=None, check_user_feedback_id=None)
 
     submissions = db.submissions.find(
         {
-            "status": "pending",
+            "status": "pending" if get_completed is False else "complete",
             "user_id": {"$ne": not_user_id},
             "message_id": {"$nin": message_ids},
         }
