@@ -3,6 +3,7 @@ from discord.ext import commands
 import services.db_service as _db
 import services.discord_service as _discord
 import utils.date_util as date_util
+import utils.split_util as split_util
 
 class Member(commands.Cog):
     def __init__(self, bot):
