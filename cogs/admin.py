@@ -15,6 +15,7 @@ class Admin(commands.Cog):
         if not authorperms.manage_messages:
             await ctx.author.send("You don't have the permissions to do that here!")
             return
+
         submission_list = _db.get_ordered_queue_submissions()
 
         if submission_list is None:
@@ -42,6 +43,24 @@ class Admin(commands.Cog):
             await next_author.send(
                 "Your submission is next in the queue.\n" + link_text
             )
+
+    @commands.command(name="info", help="Gets information about current review submission")
+    async def info(self, ctx):
+
+        submission_list = _db.get_ordered_queue_submissions(get_completed=True)
+        submission = submission_list[-1]
+
+        feedbacks = _db.get_feedbacks_for_submission(submission.message_id)
+
+        link_text = "Current Submission Link: " + submission_list[0].jump_url + "\n"
+        if feedbacks is None:
+            await ctx.author.send(link_text + "This submission received no feedback.")
+            return
+        response_str = link_text + "\n" + "Feedback:\n"
+        for feedback in feedbacks:
+            response_str += "- " + feedback.jump_url + "\n"
+        await ctx.author.send(response_str)
+
 
 
 def setup(bot):
