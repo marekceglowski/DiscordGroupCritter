@@ -1,8 +1,11 @@
 import random
+
+import discord
 from discord.ext import commands
 import services.db_service as _db
 import services.discord_service as _discord
 import utils.date_util as date_util
+import utils.split_util as split_util
 
 class Member(commands.Cog):
     def __init__(self, bot):
@@ -21,22 +24,14 @@ class Member(commands.Cog):
             await ctx.author.send("Must include message with your submission.")
             return
 
-        if arg.lower().startswith('nolive'):
+        if arg.lower().startswith('no-live-crit'):
             submission = _db.add_submission(ctx.message, 'skip')
             await ctx.author.send('Submission added! It will not be part of the livestream.')
         else:
             submission = _db.add_submission(ctx.message)
             position = _db.get_submission_position_in_queue(submission.message_id)
 
-            await ctx.author.send(
-                "Submission added! Current position in queue: "
-                + str(position)
-                + "\n"
-                + "Link: ||<"
-                + ctx.message.jump_url
-                + ">||\n",
-                embed=None
-            )
+            await ctx.author.send("Submission added! Queue position: " + str(position) + "\n")
 
     @commands.command(
         name="count",
@@ -51,8 +46,9 @@ class Member(commands.Cog):
         else:
             queue_count = len(subs_queue)
 
-        await ctx.author.send("Number of items in the queue is " + str(queue_count) + ".")
-        await ctx.message.delete()
+        await ctx.author.send("Number of items in the queue: " + str(queue_count) + ".")
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
 
     @commands.command(
         name="crit", help="Returns the next or a random submission from the queue"
@@ -72,7 +68,7 @@ class Member(commands.Cog):
         )
 
         if submission_list is None:
-            await ctx.author.send("You have reviewed all avialable submissions")
+            await ctx.author.send("You have reviewed all available submissions.")
             return
 
         submissions_with_positions = _db.get_submission_positions_in_queue_multi(
@@ -92,13 +88,14 @@ class Member(commands.Cog):
                 + "Submission #"
                 + str(sub_pos[1])
                 + "\n"
-                + "Link: "
+                + "Link: <"
                 + sub_pos[0].jump_url
-                + "\n"
+                + ">\n"
                 + "*Go to the above link, and reply to the message to give feedback.*\n."
         )
         await ctx.author.send(text, embed=None)
-        await ctx.message.delete()
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
 
     @commands.command(
         name="submissions",
@@ -139,14 +136,19 @@ class Member(commands.Cog):
                         )
                 response_str += "\n\n"
         response_str + "\n\n."
-        await ctx.author.send(response_str, embed=None)
-        await ctx.message.delete()
+        await _discord.dm(ctx.author, response_str)
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
 
     @commands.command(
         name="feedback",
         help="Returns your entered submissions and any feedback they have received",
     )
-    async def feedback(self, ctx, arg="both"):
+    async def feedback(self, ctx, arg='none'):
+
+        if arg != 'given' and arg != 'received' and arg != 'both':
+            response_str = "Use command `!feedback given`, `!feedback received`, or `!feedback both`"
+            await ctx.author.send(response_str, embed=None)
 
         if arg == 'given' or arg == 'both':
             response_str = "**> ============\n> Feedback Given:\n> ============**\n\n"
@@ -157,7 +159,45 @@ class Member(commands.Cog):
 
         if arg == 'received' or arg == 'both':
             await self.submissions(ctx)
-        await ctx.message.delete()
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
+
+    @commands.command(
+        name="clear",
+        help="Clears messages from GroupCritter in the DM Channel",
+    )
+    async def clear(self, ctx, arg='none'):
+        if isinstance(ctx.channel, discord.channel.DMChannel):
+            async for message in ctx.channel.history(limit=200):
+                if message.author == self.bot.user:
+                    await message.delete()
+
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            await ctx.message.delete()
+
+    @commands.command(
+        name="help",
+        help="Help"
+    )
+    async def help(self, ctx):
+        response_str = """
+Commands:
+
+- `!add <text>` - adds a new submission to the group crit queue
+- `!add no-live-crit <text>` - adds a new submission with status 'skip' so it's not in the livestream queue
+- `!count` - counts the number of submissions currently in the queue
+- `!crit random` - sends you a random submission from the queue to critique (always returns a submission you haven't reviewed)
+- `!crit next` - sends you the next submission from the the queue to critique (doesn't shift the queue position, useful if you want to do them in order)
+- `!feedback [given|received|both]` - displays feedback you have given, received, or both
+- `!stats` - displays your level and how much feedback you have given
+- `!submissions` - displays your crit submissions and feedback received
+
+Admin Commands:
+
+- `!next` - moves the queue up one spot and displays a link to the submission
+- `!info` - shows a list of all feedback given to the current queue submission        
+"""
+        await ctx.author.send(response_str, embed=None)
 
 
     @commands.Cog.listener()
