@@ -1,4 +1,6 @@
 import random
+
+import discord
 from discord.ext import commands
 import services.db_service as _db
 import services.discord_service as _discord
@@ -29,15 +31,7 @@ class Member(commands.Cog):
             submission = _db.add_submission(ctx.message)
             position = _db.get_submission_position_in_queue(submission.message_id)
 
-            await ctx.author.send(
-                "Submission added! Current position in queue: "
-                + str(position)
-                + "\n"
-                + "Link: ||<"
-                + ctx.message.jump_url
-                + ">||\n",
-                embed=None
-            )
+            await ctx.author.send("Submission added! Queue position: " + str(position) + "\n")
 
     @commands.command(
         name="count",
@@ -52,7 +46,7 @@ class Member(commands.Cog):
         else:
             queue_count = len(subs_queue)
 
-        await ctx.author.send("Number of items in the queue is " + str(queue_count) + ".")
+        await ctx.author.send("Number of items in the queue: " + str(queue_count) + ".")
         if not isinstance(ctx.channel, discord.channel.DMChannel):
             await ctx.message.delete()
 
@@ -74,7 +68,7 @@ class Member(commands.Cog):
         )
 
         if submission_list is None:
-            await ctx.author.send("You have reviewed all avialable submissions")
+            await ctx.author.send("You have reviewed all available submissions.")
             return
 
         submissions_with_positions = _db.get_submission_positions_in_queue_multi(
@@ -94,9 +88,9 @@ class Member(commands.Cog):
                 + "Submission #"
                 + str(sub_pos[1])
                 + "\n"
-                + "Link: "
+                + "Link: <"
                 + sub_pos[0].jump_url
-                + "\n"
+                + ">\n"
                 + "*Go to the above link, and reply to the message to give feedback.*\n."
         )
         await ctx.author.send(text, embed=None)
