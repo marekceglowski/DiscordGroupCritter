@@ -10,5 +10,5 @@ async def dm(user, text, wrap_at=2000):
         await user.send(chunk)
 
 
-def is_group_crit_channel(ctx):
-    return ctx.channel.id == group_crit_channel_id
+def is_group_crit_channel(channel):
+    return channel.id == group_crit_channel_id

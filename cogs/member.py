@@ -251,7 +251,27 @@ Admin Commands:
             return
 
         if message.reference is not None:
-            await self.process_feedback(message)
+            ref_message = message.reference.resolved
+
+            # Add submission for someone else
+            if message.content.startswith('!add'):
+                submission = _db.get_submission_by_message_id(ref_message.id)
+                if submission is not None:
+                    await message.author.send('This message already had a submission added.')
+                    await message.delete()
+                    return
+
+                submission = _db.add_submission(ref_message)
+                position = _db.get_submission_position_in_queue(submission.message_id)
+
+                await ref_message.author.send("Your submission was added by user <@{}>.\nLink: {}\n Queue position: {}\n"
+                                              .format(message.author.id, ref_message.jump_url, str(position)))
+                _db.add_user_if_not_exist(ref_message.author.id)
+                message.delete()
+
+            # Feedback processing
+            else:
+                await self.process_feedback(message)
 
     async def process_feedback(self, message):
         submission = _db.get_submission_by_message_id(message.reference.message_id)
@@ -274,7 +294,7 @@ Admin Commands:
                         + "Link: "
                         + submission.jump_url
                         + "\n\n"
-                        + "Feedback from {}\n".format(message.author.display_name)
+                        + "Feedback from @<{}>\n".format(message.author.id)
                         + "Link: "
                         + message.jump_url
                         + "\n"
