@@ -7,6 +7,7 @@ import services.discord_service as _discord
 import utils.date_util as date_util
 import utils.split_util as split_util
 
+
 class Member(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -56,7 +57,7 @@ class Member(commands.Cog):
     )
     async def get_crit(self, ctx, arg="next"):
         arg = arg.lower()
-        
+
         valid_args = ["next", "random"]
 
         if arg not in valid_args:
@@ -83,9 +84,9 @@ class Member(commands.Cog):
         elif arg == "random":
             review_text = "Random submission to review:\n"
             sub_pos = random.choice(submissions_with_positions)
-            
+
         text = (
-            review_text
+                review_text
                 + "Submission #"
                 + str(sub_pos[1])
                 + "\n"
@@ -156,7 +157,7 @@ class Member(commands.Cog):
             _db.add_user_if_not_exist(ctx.author.id)
             feedbacks = _db.get_feedbacks_given(ctx.author.id)
             for idx, feedback in enumerate(feedbacks):
-                response_str += '> ' + str(idx+1) + '. ||<' + feedback.jump_url + '>||\n\n'
+                response_str += '> ' + str(idx + 1) + '. ||<' + feedback.jump_url + '>||\n\n'
             await ctx.author.send(response_str, embed=None)
 
         if arg == 'received' or arg == 'both':
@@ -246,14 +247,14 @@ Admin Commands:
             sub_author_discord = self.bot.get_user(submission_author_id)
             if sub_author_discord is not None:
                 message_text = (
-                    "Your following submission has received feedback:\n"
-                    + "Link: "
-                    + submission.jump_url
-                    + "\n\n"
-                    + "Feedback from {}\n".format(message.author.display_name)
-                    + "Link: "
-                    + message.jump_url
-                    + "\n"
+                        "Your following submission has received feedback:\n"
+                        + "Link: "
+                        + submission.jump_url
+                        + "\n\n"
+                        + "Feedback from {}\n".format(message.author.display_name)
+                        + "Link: "
+                        + message.jump_url
+                        + "\n"
                 )
                 await sub_author_discord.send(message_text)
 
