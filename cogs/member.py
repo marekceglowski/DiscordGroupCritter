@@ -16,8 +16,11 @@ class Member(commands.Cog):
         name="add",
         help="Add a submission to the queue (eg. \"!add submission text here\")",
     )
-    async def add_crit(self, ctx, *, arg):
-        if not _discord.is_group_crit_channel(ctx):
+    async def add_crit(self, ctx, *, arg=None):
+        if ctx.message.reference is not None:
+            return
+
+        if not _discord.is_group_crit_channel(ctx.channel):
             await ctx.author.send("Must add using the group-crit channel.")
             return
 
@@ -40,6 +43,9 @@ class Member(commands.Cog):
         help="Displays the number of submissions in the queue"
     )
     async def count_crits(self, ctx):
+        if ctx.message.reference is not None:
+            return
+
         subs_queue = _db.get_ordered_queue_submissions()
 
         if subs_queue is None:
@@ -56,6 +62,9 @@ class Member(commands.Cog):
         name="crit", help="Returns the next or a random submission from the queue"
     )
     async def get_crit(self, ctx, arg="next"):
+        if ctx.message.reference is not None:
+            return
+
         arg = arg.lower()
 
         valid_args = ["next", "random"]
@@ -104,6 +113,9 @@ class Member(commands.Cog):
         help="Returns your entered submissions and any feedback they have received",
     )
     async def submissions(self, ctx):
+        if ctx.message.reference is not None:
+            return
+
         response_str = ""
 
         user = _db.get_user_by_author_id(ctx.author.id)
@@ -147,6 +159,8 @@ class Member(commands.Cog):
         help="Returns your entered submissions and any feedback they have received",
     )
     async def feedback(self, ctx, arg='none'):
+        if ctx.message.reference is not None:
+            return
 
         if arg != 'given' and arg != 'received' and arg != 'both':
             response_str = "Use command `!feedback given`, `!feedback received`, or `!feedback both`"
@@ -183,6 +197,9 @@ class Member(commands.Cog):
         help="Help"
     )
     async def help(self, ctx):
+        if ctx.message.reference is not None:
+            return
+
         response_str = """
 Commands:
 
@@ -209,6 +226,9 @@ Admin Commands:
             this will turn that feature off and vice-versa if you are not receiving DMs""",
     )
     async def toggle_feedback_dm(self, ctx):
+        if ctx.message.reference is not None:
+            return
+
         user = _db.get_user_by_author_id(ctx.author.id)
         _db.user_toggle_feedback_dm(user)
         dm_on_feedback = not (user.dm_on_feedback)
@@ -225,6 +245,9 @@ Admin Commands:
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
+            return
+
+        if not _discord.is_group_crit_channel(message.channel):
             return
 
         if message.reference is not None:
