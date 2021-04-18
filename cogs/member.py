@@ -267,7 +267,7 @@ Admin Commands:
                 await ref_message.author.send("Your submission was added by user <@{}>.\nLink: {}\n Queue position: {}\n"
                                               .format(message.author.id, ref_message.jump_url, str(position)))
                 _db.add_user_if_not_exist(ref_message.author.id)
-                message.delete()
+                await message.delete()
 
             # Feedback processing
             else:
